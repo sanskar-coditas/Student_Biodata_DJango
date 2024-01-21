@@ -87,7 +87,7 @@ def get(request):
             data = [{'first_name': student.first_name, 'last_name': student.last_name, 'dob': student.dob, 'photo_path':student.photo} for student in students]
             return render(request, 'display_data.html', {'data': data})
     else: 
-        return render(request, 'student_profile_form.html')\
+        return render(request, 'student_profile_form.html')
 
 @csrf_exempt
 def delete(request):
@@ -157,6 +157,7 @@ def update(request):
                 updated_student = Student.objects.get(pk=student.pk)
                 
                 # Create a dictionary with updated data for rendering in a different template
+
                 updated_data = {
                     'first_name': updated_student.first_name,
                     'last_name': updated_student.last_name,

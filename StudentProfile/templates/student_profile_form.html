@@ -17,6 +17,9 @@
     form {
       max-width: 600px;
       margin: 0 auto;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
 
     label {
@@ -24,12 +27,26 @@
       margin-bottom: 5px;
     }
 
-    input {
+    input, button {
       margin-bottom: 10px;
     }
 
-    input[type="submit"] {
+    input[type="submit"], button {
       margin-right: 5px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    input[type="submit"]:hover, button:hover {
+      background-color: #45a049;
+    }
+
+    input[type="file"] {
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -38,7 +55,6 @@
   <h2>Student Profile Form</h2>
 
   <form action="" method="post" enctype="multipart/form-data">   
-
     <label for="firstName">First Name:</label>
     <input type="text" id="firstName" name="firstName" required>
 
@@ -53,14 +69,13 @@
 
     <label for="resume">Resume (PDF):</label>
     <input type="file" id="resume" name="resume" accept=".pdf">
-    
-     <!-- Submit Button -->
-     <input type="submit" value="submit" name="action">
-</form>
 
-    <!-- CRUD Section -->
-<form action="{% url 'get_data' %}" method="post" enctype="multipart/form-data">   
+    <!-- Submit Button -->
+    <input type="submit" value="Submit" name="action">
+  </form>
 
+  <!-- CRUD Section -->
+  <form action="{% url 'get_data' %}" method="post" enctype="multipart/form-data">   
     <div>
       <label for="editFirstNameGet">Enter First Name for GET:</label>
       <input type="text" id="editFirstNameGet" name="editFirstNameGet" required>
@@ -69,28 +84,26 @@
     <div>
       <button type="submit" name="action" value="get">Get</button>
     </div>
-</form>
+  </form>
 
-<form action="{% url 'delete_data' %}" method="post" enctype="multipart/form-data">   
+  <form action="{% url 'delete_data' %}" method="post" enctype="multipart/form-data">   
+    <div>
+      <label for="editFirstNameDelete">Enter First Name for DELETE:</label>
+      <input type="text" id="editFirstNameDelete" name="editFirstNameDelete" required>
+    </div>
 
-  <div>
-    <label for="editFirstNameDelete">Enter First Name for DELETE:</label>
-    <input type="text" id="editFirstNameDelete" name="editFirstNameDelete" required>
-  </div>
+    <div>
+      <button type="submit" name="action" value="delete">Delete</button>
+    </div>
+  </form>
 
-  <div>
-    <button type="submit" name="action" value="delete">Delete</button>
-  </div>
-</form>
+  <form action="{% url 'update_data' %}" method="post" enctype="multipart/form-data">   
+    <div>
+      <label for="editFirstNameUpdate">Enter First Name of the student that you want to UPDATE:</label>
+      <input type="text" id="editFirstNameUpdate" name="editFirstNameUpdate" required>
+    </div>
 
-<form action="{% url 'update_data' %}" method="post" enctype="multipart/form-data">   
-
-  <div>
-    <label for="editFirstNameUpdate">Enter First Name of the student that you want to UPDATE:</label>
-    <input type="text" id="editFirstNameUpdate" name="editFirstNameUpdate" required>
-  </div>
-
-  <label for="newFirstName">First Name:</label>
+    <label for="newFirstName">First Name:</label>
     <input type="text" id="newFirstName" name="newFirstName" required>
 
     <label for="newLastName">Last Name:</label>
@@ -105,10 +118,10 @@
     <label for="newResume">Resume (PDF):</label>
     <input type="file" id="newResume" name="newResume" accept=".pdf">
 
-  <div>
-    <button type="submit" name="action" value="update">Update</button>
-  </div>
-</form>
+    <div>
+      <button type="submit" name="action" value="update">Update</button>
+    </div>
+  </form>
 
 </body>
 </html>
