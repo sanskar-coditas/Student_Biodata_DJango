@@ -1,0 +1,30 @@
+<!-- display_data.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Display Data</title>
+</head>
+<body>
+
+  <h2>Student Data</h2>
+
+  {% if data %}
+    <ul>
+      {% for student in data %}
+        <li>{{ student.first_name }} {{ student.last_name }} - Date of Birth: {{ student.dob }}</li>
+        {% if data.photo_path != "" %}
+            <img src="{{ data.photo_path }}" alt="Photo">
+        {% else %}
+         <p>No photo uploaded.</p>
+  {% endif %}
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No data found.</p>
+  {% endif %}
+
+
+</body>
+</html>

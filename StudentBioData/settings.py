@@ -28,6 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 STATIC_URL = '/static/'
 # settings.py
+MEDIA_ROOT = path.join(BASE_DIR, 'static/photos/')
+
 
 STATICFILES_DIRS = [
     path.join(BASE_DIR, 'static'),
@@ -45,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'StudentProfile'
+    'StudentProfile',
 ]
 
 MIDDLEWARE = [
