@@ -6,8 +6,6 @@ from os import path,makedirs
 from django.conf import settings
 from .models import Student
 
-
-
 @csrf_exempt
 def submit(request):
     if request.method == 'POST':
@@ -18,7 +16,7 @@ def submit(request):
         resume = request.FILES.get('resume')
         print("Started")
     
-        photo_folder = path.join(settings.BASE_DIR, 'static', 'photos')
+        photo_folder = path.join('static', 'photos')
         resume_folder = path.join(settings.BASE_DIR, 'static', 'resumes')
 
         is_resume_uploaded = ""
@@ -68,13 +66,6 @@ def submit(request):
         print(f"path of  photo {updated_student.photo.url}")
 
         return render(request, 'updated_data_template.html', {'data': updated_data})
-
-
-
-
-
-        result = f"Received data: First Name - {first_name}, Last Name - {last_name}, DOB - {dob}, Resume photo Status: {is_resume_uploaded} and {is_photo_uploaded} and Sqlite Employee record saved"
-        return HttpResponse(result)
     else:
         return render(request, 'student_profile_form.html')
     
@@ -84,7 +75,7 @@ def get(request):
     if request.method == 'POST':
             edit_first_name = request.POST.get('editFirstNameGet', '')
             students = Student.objects.filter(first_name=edit_first_name)
-            data = [{'first_name': student.first_name, 'last_name': student.last_name, 'dob': student.dob, 'photo_path':student.photo} for student in students]
+            data = [{'first_name': student.first_name, 'last_name': student.last_name, 'dob': student.dob, 'photo_path':student.photo.url} for student in students]
             return render(request, 'display_data.html', {'data': data})
     else: 
         return render(request, 'student_profile_form.html')
@@ -113,7 +104,7 @@ def update(request):
         new_photo = request.FILES.get('newImage')
         new_resume = request.FILES.get('newResume')
 
-        new_photo_folder = path.join(settings.BASE_DIR, 'static', 'photos')
+        new_photo_folder = path.join('static', 'photos')
         new_resume_folder = path.join(settings.BASE_DIR, 'static', 'resumes')
 
         try:
@@ -153,16 +144,13 @@ def update(request):
                     resume=resume_path
                 )
 
-                # Fetch the updated student data
                 updated_student = Student.objects.get(pk=student.pk)
                 
-                # Create a dictionary with updated data for rendering in a different template
-
                 updated_data = {
                     'first_name': updated_student.first_name,
                     'last_name': updated_student.last_name,
                     'dob': updated_student.dob,
-                    'photo_url': updated_student.photo.url if updated_student.photo else None,
+                    'photo_url': updated_student.photo.url,
                     'resume_url': updated_student.resume.url if updated_student.resume else None,
                     'is_photo_uploaded': is_photo_uploaded,
                     'is_resume_uploaded': is_resume_uploaded,

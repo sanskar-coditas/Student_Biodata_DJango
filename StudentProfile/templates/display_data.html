@@ -5,6 +5,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Display Data</title>
+  <style>
+    /* Add some CSS styles for the images */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: auto; /* Center the images */
+      width: 400px; /* Set a specific width */
+      height: 700px; /* Set a specific height */
+    }
+  </style>
 </head>
 <body>
 
@@ -14,17 +25,12 @@
     <ul>
       {% for student in data %}
         <li>{{ student.first_name }} {{ student.last_name }} - Date of Birth: {{ student.dob }}</li>
-        {% if data.photo_path != "" %}
-            <img src="{{ data.photo_path }}" alt="Photo">
-        {% else %}
-         <p>No photo uploaded.</p>
-  {% endif %}
+        <img src="{{ student.photo_path }}" alt="Photo">
       {% endfor %}
     </ul>
   {% else %}
     <p>No data found.</p>
   {% endif %}
-
 
 </body>
 </html>
