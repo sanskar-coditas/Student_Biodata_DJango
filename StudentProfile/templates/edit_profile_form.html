@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Data</title>
+  <style>
+    /* Add some CSS styles for the image */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: auto; /* Center the image */
+      width: 400px; /* Set a specific width */
+      height: 700px; /* Set a specific height */
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Student Data</h2>
+
+  <p>First Name: {{ data.first_name }}</p>
+  <p>Last Name: {{ data.last_name }}</p>
+  <p>Date of Birth: {{ data.dob }}</p>
+  <p>ID: {{ data.id }}</p>
+
+  <form action="{% url 'update_data' student_id=data.id %}" method="post" enctype="multipart/form-data">   
+
+  <label for="newFirstName">First Name:</label>
+  <input type="text" id="newFirstName" name="newFirstName" value="{{ data.first_name }}" required>
+
+  <label for="newLastName">Last Name:</label>
+  <input type="text" id="newLastName" name="newLastName" value="{{ data.last_name }}" required>
+
+  <label for="newDob">Date of Birth:</label>
+  <input type="date" id="newDob" name="newDob" value="{{ data.dob }}" required>
+
+  <label for="newImage">Image:</label>
+  <input type="file" id="newImage" name="newImage" value="{{data.photo_path}}">
+
+  <label for="newResume">Resume (PDF):</label>
+  <input type="file" id="newResume" name="newResume" value="{{data.resume}}">
+
+  <div>
+    <button type="submit" name="action" value="update">Update</button>
+  </div>
+
+  <p>Path: {{ data.photo_path }}</p>
+
+  {% if data.is_photo_uploaded %}
+    <p>Photo Status: {{ data.is_photo_uploaded }}</p>
+    <img src="{{ data.photo_path }}" alt="Photo">
+  {% else %}
+    <p>No photo uploaded.</p>
+  {% endif %}
+
+  {% if data.is_resume_uploaded %}
+    <p>Resume Status: {{ data.is_resume_uploaded }}</p>
+  {% else %}
+    <p>No resume uploaded.</p>
+  {% endif %}
+</form>
+</body>
+</html>

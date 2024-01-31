@@ -95,7 +95,7 @@ def delete(request):
         return render(request, 'student_profile_form.html')
 
 @csrf_exempt
-def update(request):
+def update(request, student_id):
     if request.method == 'POST':
         edit_first_name = request.POST.get('editFirstNameUpdate', '')
         new_first_name = request.POST.get('newFirstName', '')
@@ -108,40 +108,43 @@ def update(request):
         new_resume_folder = path.join(settings.BASE_DIR, 'static', 'resumes')
 
         try:
-            student = Student.objects.filter(first_name=edit_first_name).first()
+            student = Student.objects.filter(id=student_id).first()
+
+            print(f"first-name: {student.first_name}")
+
 
             if student:
 
                 is_resume_uploaded = ""
                 is_photo_uploaded = ""
 
-                if new_photo:
-                    photo_path = path.join(new_photo_folder, new_photo.name)
-                    with open(photo_path, 'wb') as photo_file:
-                        for chunk in new_photo.chunks():
-                            photo_file.write(chunk)
-                            is_photo_uploaded = f"Photo uploaded at {new_photo_folder}"
-                else:
-                    photo_path = None
-                    is_photo_uploaded = "Photo not uploaded"
+                # if new_photo:
+                #     photo_path = path.join(new_photo_folder, new_photo.name)
+                #     with open(photo_path, 'wb') as photo_file:
+                #         for chunk in new_photo.chunks():
+                #             photo_file.write(chunk)
+                #             is_photo_uploaded = f"Photo uploaded at {new_photo_folder}"
+                # else:
+                #     photo_path = None
+                #     is_photo_uploaded = "Photo not uploaded"
 
-                if new_resume:
-                    resume_path = path.join(new_resume_folder, new_resume.name)
-                    with open(resume_path, 'wb') as resume_file:
-                        for chunk in new_resume.chunks():
-                            resume_file.write(chunk)
-                            is_resume_uploaded = f"Resume uploaded at {new_resume_folder}"
-                else:
-                    resume_path = None
-                    is_resume_uploaded = "Resume not uploaded"
+                # if new_resume:
+                #     resume_path = path.join(new_resume_folder, new_resume.name)
+                #     with open(resume_path, 'wb') as resume_file:
+                #         for chunk in new_resume.chunks():
+                #             resume_file.write(chunk)
+                #             is_resume_uploaded = f"Resume uploaded at {new_resume_folder}"
+                # else:
+                #     resume_path = None
+                #     is_resume_uploaded = "Resume not uploaded"
                 
 
-                Student.objects.filter(first_name=edit_first_name).update(
+                Student.objects.filter(id=student_id).update(
                     first_name=new_first_name,
                     last_name=new_last_name,
                     dob=new_dob,
-                    photo=photo_path,
-                    resume=resume_path
+                    photo=new_photo,
+                    resume=new_resume
                 )
 
                 updated_student = Student.objects.get(pk=student.pk)
@@ -152,8 +155,8 @@ def update(request):
                     'dob': updated_student.dob,
                     'photo_url': updated_student.photo.url,
                     'resume_url': updated_student.resume.url if updated_student.resume else None,
-                    'is_photo_uploaded': is_photo_uploaded,
-                    'is_resume_uploaded': is_resume_uploaded,
+                   'is_photo_uploaded': updated_student.photo if True else False , 
+                   'is_resume_uploaded': updated_student.resume if True else False
                 }
                 print(f"path of  photo {updated_student.photo.url}")
 
@@ -165,4 +168,17 @@ def update(request):
 
         return HttpResponse(message)
     else:
+        return render(request, 'student_profile_form.html')
+    
+    
+    
+@csrf_exempt
+def fetch_data(request):
+    if request.method == 'POST':
+            edit_first_name = request.POST.get('editFirstNameUpdate', '')
+            student = Student.objects.filter(id=edit_first_name).first()
+            print(f"first-name: {student.first_name}")            
+            data = {'id':student.id, 'first_name': student.first_name, 'last_name': student.last_name, 'dob': student.dob, 'photo_path':student.photo, 'resume':student.resume, 'is_photo_uploaded': student.photo if True else False , 'is_resume_uploaded': student.resume if True else False }
+            return render(request, 'edit_profile_form.html', {'data': data})
+    else: 
         return render(request, 'student_profile_form.html')

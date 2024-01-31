@@ -24,7 +24,6 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("",views.submit),
     path("", include("StudentProfile.urls")),
 
 

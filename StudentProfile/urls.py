@@ -10,9 +10,8 @@ urlpatterns = [
     path('submit', views.submit),
     path('get', get, name='get_data'),
     path('delete', views.delete, name='delete_data'),
-    path('update', views.update, name='update_data'),
-
-
+    path('fetch_data', views.fetch_data, name='fetch_data'),
+    path('update/<int:student_id>/', views.update, name='update_data'),
 
 ]
 if settings.DEBUG:
